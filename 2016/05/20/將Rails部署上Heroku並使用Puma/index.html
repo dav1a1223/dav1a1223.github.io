@@ -50,7 +50,7 @@
 <p>不要要注意的是免費版本有限制在24小時內<strong>一定</strong>得休息6小時,<br>因此若是要公開給別人使用，就要注意一下是否會造成休息時間不足而要使用時無法使用的狀況！<br>以下是自己部署時的步驟：</p>
 <h2 id="申請heroku帳號"><a href="#申請heroku帳號" class="headerlink" title="申請heroku帳號"></a>申請heroku帳號</h2><p>這個就不多說了，<br>請上[heroku官網]<a href="https://dashboard.heroku.com/" target="_blank" rel="external">https://dashboard.heroku.com/</a></p>
 <p>另外也需要有Git才能使用</p>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p>在Rails專案中的Gemfile中加上<code>gem &#39;heroku&#39;``gem &#39;rails_12factor&#39;``gem &#39;puma&#39;</code><br>並在Terminal中輸入<code>bundle install</code>進行安裝</p>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p>在Rails專案中的Gemfile中加上<code>gem &#39;heroku&#39; gem &#39;rails_12factor&#39; gem &#39;puma&#39;</code><br>並在Terminal中輸入<code>bundle install</code>進行安裝</p>
 <p>在專案底下建立Procfile(就是一個叫Procfile的檔案，沒有副檔名)<br>並加入<code>web: bundle exec puma -t 5:5 -p ${PORT:-3000} -e ${RACK_ENV:-development}</code><br>詳細可以參考：[官網]<a href="https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server" target="_blank" rel="external">https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server</a></p>
 <h2 id="建立Heroku專案"><a href="#建立Heroku專案" class="headerlink" title="建立Heroku專案"></a>建立Heroku專案</h2><p>在Terminal打入<code>heroku create</code>或<code>heroku create [專案名字]</code><br>成功後會看到Heroku隨機給予的網址<br>例如：<a href="https://fast-lake-17408.herokuapp.com" target="_blank" rel="external">https://fast-lake-17408.herokuapp.com</a><br>這個就是未來這個專案的網址了！</p>
 <p>接下來在將自己的專案加入git遠端連線<br><code>git remote add heroku [剛剛產生的網址]</code></p>
