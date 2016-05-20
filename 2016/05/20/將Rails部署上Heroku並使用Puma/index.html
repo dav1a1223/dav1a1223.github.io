@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>將Rails部署上Heroku並使用Puma | Dalai&#39;s Note</title>
+  <meta name="description" content="go ahead and keep learning" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
+
+  <meta name="generator" content="Dalai's Note">
+
+  
+  
+  
+
+  
+</head>
+
+
+<body class="post-template">
+
+  <header class="site-head"  style="background-image: url(//blog.ghost.org/content/images/2013/Nov/cover.png)" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="//blog.ghost.org/content/images/2013/Nov/bloglogo_1-1.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">Dalai's Note</h1>
+            <h2 class="blog-description">go ahead and keep learning</h2>
+        </div>
+    </div>
+</header>
+  
+
+<main class="content" role="main">
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2016-05-20T15:51:48.000Z" itemprop="datePublished">
+          2016-05-20
+      </time>
+    
+</span>
+    <h1 class="post-title">將Rails部署上Heroku並使用Puma</h1>
+    <section class="post-content">
+      <p>前陣子因為要將所做的縮網址工具放上網測試，<br>也順便接觸Heroku這個雲端環境，<br>其免費版本擁有每個專案100MB、DB 5MB的限制，<br>但對於僅想放上去測試來用也是蠻足夠的了。</p>
+<p>不要要注意的是免費版本有限制在24小時內<strong>一定</strong>得休息6小時,<br>因此若是要公開給別人使用，就要注意一下是否會造成休息時間不足而要使用時無法使用的狀況！<br>以下是自己部署時的步驟：</p>
+<h2 id="申請heroku帳號"><a href="#申請heroku帳號" class="headerlink" title="申請heroku帳號"></a>申請heroku帳號</h2><p>這個就不多說了，<br>請上[heroku官網]<a href="https://dashboard.heroku.com/" target="_blank" rel="external">https://dashboard.heroku.com/</a></p>
+<p>另外也需要有Git才能使用</p>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p>在Rails專案中的Gemfile中加上<code>gem &#39;heroku&#39;``gem &#39;rails_12factor&#39;``gem &#39;puma&#39;</code><br>並在Terminal中輸入<code>bundle install</code>進行安裝</p>
+<p>在專案底下建立Procfile(就是一個叫Procfile的檔案，沒有副檔名)<br>並加入<code>web: bundle exec puma -t 5:5 -p ${PORT:-3000} -e ${RACK_ENV:-development}</code><br>詳細可以參考：[官網]<a href="https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server" target="_blank" rel="external">https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server</a></p>
+<h2 id="建立Heroku專案"><a href="#建立Heroku專案" class="headerlink" title="建立Heroku專案"></a>建立Heroku專案</h2><p>在Terminal打入<code>heroku create</code>或<code>heroku create [專案名字]</code><br>成功後會看到Heroku隨機給予的網址<br>例如：<a href="https://fast-lake-17408.herokuapp.com" target="_blank" rel="external">https://fast-lake-17408.herokuapp.com</a><br>這個就是未來這個專案的網址了！</p>
+<p>接下來在將自己的專案加入git遠端連線<br><code>git remote add heroku [剛剛產生的網址]</code></p>
+<p>接著以後就可以push東西上去Heroku了！<br>（但是必須在專案中的master分支）<br>在push的同時也會將所需要用到的gem在heroku上一併安裝</p>
+<p>推完code上去後就是建資料庫了<br><code>heroku run rake db:migrate</code></p>
+<p>接下來應該就能在剛剛的網址上正常運作囉！</p>
+<h2 id="附錄"><a href="#附錄" class="headerlink" title="附錄"></a>附錄</h2><p>1.若輸入<code>heroku run rake db:migrate</code>時跑出<br> ▸    Cannot run more than 1 Free size dynes.<br> 的錯誤表示有其他console在運行中，要先關掉</p>
+<p>2.要看在heroku上的log可以輸入<code>heroku logs</code><br>要顯示比較完整的log可以輸入<code>heroku logs -n 1500</code><br>要讓終端及持續輸出log就<code>heroku logs --tail</code></p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>Dalai</h4>
+    <p>A designer, developer and entrepreneur. Spends his time travelling the world with a bag of kites. Likes journalism and publishing platforms.</p>
+</section>
+      <section class="share">
+    <h4>Share this post</h4>
+    <a class="icon-twitter" href="http://twitter.com/share?url=http://dalai.tw/2016/05/20/將Rails部署上Heroku並使用Puma/"
+       onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://dalai.tw/2016/05/20/將Rails部署上Heroku並使用Puma/"
+       onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://dalai.tw/2016/05/20/將Rails部署上Heroku並使用Puma/"
+       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <span class="page-number">•</span>
+    
+    <a class="older-posts" href="/2016/05/08/第一篇文章/">
+        第一篇文章 →
+    </a>
+    
+</nav>
+  <div id="comment" class="comments-area">
+    <h1 class="title"><a href="#disqus_comments" name="disqus_comments">Comments</a></h1>
+
+    
+</div>
+</main>
+
+
+  
+<footer class="site-footer">
+  
+  <div class="inner">
+     <section class="copyright">All content copyright <a href="/">Dalai's Note</a> &copy; 2014 &bull; All rights reserved.</section>
+     <section class="poweredby">Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a></section>
+  </div>
+</footer>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+
+
+
+
+
+
+</body>
+</html>
