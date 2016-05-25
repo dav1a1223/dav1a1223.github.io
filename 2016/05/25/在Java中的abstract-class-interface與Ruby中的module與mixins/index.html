@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>在Java中的abstract class, interface與Ruby中的module與mixins | Dalai&#39;s Note</title>
+  <meta name="description" content="go ahead and keep learning" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
+
+  <meta name="generator" content="Dalai's Note">
+
+  
+  
+  
+
+  
+</head>
+
+
+<body class="post-template">
+
+  <header class="site-head"  style="background-image: url(//blog.ghost.org/content/images/2013/Nov/cover.png)" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="//blog.ghost.org/content/images/2013/Nov/bloglogo_1-1.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">Dalai's Note</h1>
+            <h2 class="blog-description">go ahead and keep learning</h2>
+        </div>
+    </div>
+</header>
+  
+
+<main class="content" role="main">
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2016-05-25T09:49:56.000Z" itemprop="datePublished">
+          2016-05-25
+      </time>
+    
+    
+    | 
+    <a href='/tags/OOP-Java-Ruby/'>OOP, Java, Ruby</a>
+    
+    
+</span>
+    <h1 class="post-title">在Java中的abstract class, interface與Ruby中的module與mixins</h1>
+    <section class="post-content">
+      <p>這幾天去到一間公司面試實習時，<br>被問到了與物件導向相關的問題，<br>一問之下發現自己雖然說自己修過大神林軒田教授的OOP，<br>但是其實對於這方面的觀念還是蠻薄弱的，<br>也可能是因為實作經驗不夠多，或是都是自己埋首在寫code，鮮少與他人討論設計理念吧Orz</p>
+<p>因此回來後決定重新複習物件導向觀念，<br>在此把所看到的東西加上自己的理解、比喻做個記錄。</p>
+<p>##物件導向程式設計<br>Java與Ruby這兩個語言皆是純物件導向的語言，<br>意思就是在這兩個語言內所有的東西都是物件！<br>就算是一個數字”10”在Java也是屬於Integer這個類別，而在Ruby中屬於Fixnum這個類別<br>（Ruby中也有Integer這個類別，不過其再派生出Fixnum與Bignum）</p>
+<p>而OOP的概念為：</p>
+<blockquote>
+<p>物件導向程式設計中的每一個物件都應該能夠接受資料、處理資料並將資料傳達給其它物件，因此它們都可以被看作一   個小型的「機器」，或者說是負有責任的角色。</p>
+</blockquote>
+<p>物件導向三大特性：封裝(Encapsulation)、 繼承(Inheritance)、 多型(Polymorphism)</p>
+<p>而在Java與Ruby中拿來實現物件導向最常用的就是 <strong>Class</strong><br>其可以擁有Member（想像成變數！）與Method（想像成Function！）<br>並且可以藉由這樣的一個Object來產生Instance</p>
+<p>##Java中的abstract class與interface<br>在Java中另外有abstract class與interface來實現更精準的物件導向概念<br>為什麼需要繼承呢？<br>舉個例子，要描述世紀帝國裡的「村民」與「遊俠」好了<br>會發現有共通的屬性：HP、攻擊力<br>那在實作這兩個Class時便會重複這兩個概念<br>因此可以把「人類」這個層次提高，變成一個上層的類別<br>人類這個類別就擁有HP與攻擊力<br>而在實作「村民」與「遊俠」的Class時只需要繼承「人類」<br>再額外加上其各自擁有的功能（村民可以建造房屋等等）</p>
+<p>而abstract class與interface就是用來更精確描述這個現象：<br>在abstract class中，可以擁有自己的member，也可以有非abstarct的method，而在interface的實現中，只能夠有靜態的不能被修改的member（也就是必須是static final的，不過在interface中一般不定義member），所有的成員方法都是abstract的。從某種意義上說，interface是一種特殊形式的abstract class。</p>
+<p><strong>他們都無法自己產生Instance，而是需要被繼承或嵌入</strong><br>在進行設計時便需要先行仔細思考，何時使用abstract class何時使用interface</p>
+<p>以下敘述我的理解，若有觀念上的錯誤希望大家指正&gt; &lt;</p>
+<p>abstract class是作為一個上層的類別，例如上述例子提到的「人類」即是由abstract class來定義<br>而interface則是用來定義一套完整的 <em>功能</em><br>例如 <em>建造房子</em> 這項功能，就可以使用interface來定義<br>而當我要設計某個新的角色他擁有建造房子的功能時就可以implement這個interface</p>
+<p>因此當我在創造「村民」這個物件時，便是要extends「人類」（abstract class）、implements「建造房子」(interface)</p>
+<p>小結論：abstract class就是”is a”而interface為”like a”</p>
+<p>##Ruby中的module<br>Ruby中的module其實就很類似於Java中的interface<br>Ruby的發明人也舉過以下例子：</p>
+<blockquote>
+<p>馬的程式物件加上了線條樣式成為斑馬物件，馬是父類別，斑馬繼承了馬類別，所以斑馬是馬的子類別，而線條樣式是另外撰寫的程式碼，若又要用同樣做法將貓加上線條使其成為老虎，貓是父類別，老虎繼承了貓類別，所以老虎是貓的子類別，而線條樣式仍然是要另外撰寫的程式碼。</p>
+</blockquote>
+<p>為了避免重寫撰寫兩次「線條樣式」的程式碼，因此加入了module的概念<br>僅需要使用module撰寫一個「線條樣式」<br>在實作老虎與斑馬時只要mixins這個線條樣式的module即可<br>也讓程式碼維護時可以只專注於「線條樣式」的module之上</p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>Dalai</h4>
+    <p>A designer, developer and entrepreneur. Spends his time travelling the world with a bag of kites. Likes journalism and publishing platforms.</p>
+</section>
+      <section class="share">
+    <h4>Share this post</h4>
+    <a class="icon-twitter" href="http://twitter.com/share?url=http://dalai.tw/2016/05/25/在Java中的abstract-class-interface與Ruby中的module與mixins/"
+       onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://dalai.tw/2016/05/25/在Java中的abstract-class-interface與Ruby中的module與mixins/"
+       onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://dalai.tw/2016/05/25/在Java中的abstract-class-interface與Ruby中的module與mixins/"
+       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <span class="page-number">•</span>
+    
+    <a class="older-posts" href="/2016/05/20/將Rails部署上Heroku並使用Puma/">
+        將Rails部署上Heroku並使用Puma →
+    </a>
+    
+</nav>
+  <div id="comment" class="comments-area">
+    <h1 class="title"><a href="#disqus_comments" name="disqus_comments">Comments</a></h1>
+
+    
+</div>
+</main>
+
+
+  
+<footer class="site-footer">
+  
+  <div class="inner">
+     <section class="copyright">All content copyright <a href="/">Dalai's Note</a> &copy; 2014 &bull; All rights reserved.</section>
+     <section class="poweredby">Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a></section>
+  </div>
+</footer>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+
+
+
+
+
+
+</body>
+</html>
